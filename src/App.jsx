@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import Posts from './components/Posts';
 import Login from './components/Login';
+import SignUp from './components/SignUp';
 
 function App() {
  
@@ -15,9 +16,9 @@ function App() {
     <>
      <header className='banner'></header>
       < div id="navbar">
-      <h1 id='logo'>Stranger's Things</h1>
         <Link to={"/"} className='home'>Home</Link>
         <Link to={"/Profile"} className='profile'>Profile</Link>
+        <h1 id='logo'>Stranger's Things</h1>
         <Link to={"/Posts"} className='posts'>Posts</Link>
         <Link to={"/Login"} className='login'>Login</Link>
       </div>
@@ -29,6 +30,7 @@ function App() {
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/Posts" element={<Posts/>}/>
         <Route path="/Login" element={<Login/>}/>
+        <Route path="/SignUp" element={<SignUp/>}/>
       </Routes>
 
       </div>
