@@ -23,7 +23,7 @@ const Posts = () => {
     return (
         <>
        
-        <h2>Post</h2>
+        <h1>Post</h1>
         
         {post && postToDisplay.map((post)=>{
             
