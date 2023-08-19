@@ -5,6 +5,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Home from './components/Home';
 import Profile from './components/Profile';
 import Posts from './components/Posts';
+import Login from './components/Login';
 
 function App() {
  
@@ -19,7 +20,6 @@ function App() {
         <Link to={"/Profile"} className='profile'>Profile</Link>
         <Link to={"/Posts"} className='posts'>Posts</Link>
         <Link to={"/Login"} className='login'>Login</Link>
-        <Link to={"/Register"}className='register'>Register Now</Link>
       </div>
     
 
@@ -28,7 +28,7 @@ function App() {
         <Route path="/" element={<Home />} /> 
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/Posts" element={<Posts/>}/>
-        <Route />
+        <Route path="/Login" element={<Login/>}/>
       </Routes>
 
       </div>

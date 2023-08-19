@@ -32,17 +32,7 @@ a {
 a:hover {
   color: #104932;
 }
-.home{
-  display: flex;
-  align-content: space-between;
-  font-weight: 500;
-  color:black;
-  text-decoration: inherit;
-  border:white;
-  border-style: solid;
-  border-width: 10px;
-  margin-right: 2px;
-}
+
 
 #container {
   margin: 0;
@@ -71,10 +61,14 @@ h1 {
   background-color: #104932;
   padding: 60px;
 }
+.register{
+  background-color: white;
+}
 #navbar{
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  justify-content: space-evenly;
 }
 
 #logo{
@@ -92,12 +86,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: white;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: black;
 }
 button:focus,
 button:focus-visible {
@@ -107,5 +101,14 @@ img{
   height: 455px;
   width: 480px;
   padding: 10px;
+}
+form{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  align-items: center;
+  font-family: 'Inria Serif', serif;
+  font-size: 20px;
+
 }
 
