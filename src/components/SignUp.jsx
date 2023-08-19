@@ -2,9 +2,8 @@ import { useState } from "react";
 const cohort = '2305-FTB-ET-WEB-PT'
 const BaseURL=`https://strangers-things.herokuapp.com/api/${cohort}`
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 
-export default function LogIn(){
+export default function SignUp(){
     const[username,setUsername]=useState("");
     const[password,setPassword]=useState("");
     const[fname,setFname]=useState("");
@@ -46,29 +45,31 @@ export default function LogIn(){
 
 return(
     <div>
-        <h1>Log In</h1>
+        <h1>Create Your Profile</h1>
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}
         <form onSubmit={handleSubmit}>
             <label>
-                Username:{''}
+                First Name:{''}
+                <input type="text" value={fname} onChange={(event)=>setFname(event.target.value)}/>
+    
+            </label>
+            <label>
+                Last Name:{''}
+                <input type="text" value={lname}onChange={(event)=>setLname(event.target.value)}/>
+            </label>
+            <label>
+                Create Username:{''}
                 <input type="text" value={username} onChange={(event)=>setUsername(event.target.value)}/>
             </label>
             <label>
-                Password:{''}
+                Create Password:{''}
                 <input type="text" value={password} onChange={(event)=>setPassword(event.target.value)}/>
             </label>
-            <button onClick={()=>Navigate('/Profile/')} >
-                Sign In
+            <button onClick={()=>Navigate('/Login/')} >
+                Sign Up
             </button>
         </form>
-        <Link to={"/SignUp"}className='register'>Sign Up Now</Link>
     </div>
 )
 }
-
-
-
-
-  
-
