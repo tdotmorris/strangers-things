@@ -7,9 +7,11 @@ import Profile from './components/Profile';
 import Posts from './components/Posts';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import Authenticate from './components/Authenticate';
+
 
 function App() {
- 
+  const[token,setToken]=useState(null);
 
   return (
    
@@ -30,9 +32,10 @@ function App() {
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/Posts" element={<Posts/>}/>
         <Route path="/Login" element={<Login/>}/>
-        <Route path="/SignUp" element={<SignUp/>}/>
+        <Route path="/SignUp" element={<SignUp setToken={setToken} token={token}/>}/>
+        <Route path="/Authenticate" element={<Authenticate  setToken={setToken} token={token}/>}/>
       </Routes>
-
+      
       </div>
     </>
   )

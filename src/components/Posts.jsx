@@ -1,9 +1,12 @@
+import { useSearchParams } from "react-router-dom";
 import { FetchAllData } from "../API"
 import React, {useState, useEffect } from 'react';
 
 const Posts = () => {
     const[post, setPost]=useState([])
     const[error, setError]=useState(null)
+    const[searchParams,setSearchParams]=useState("")
+    //const searchParams=useSearchParams
 
     
     useEffect(()=>{
@@ -18,13 +21,22 @@ const Posts = () => {
             getAllData();
         },[]);   
 
-    const postToDisplay=post
-
+    //const postToDisplay=post
+        const postToDisplay=useSearchParams ? post.filter((post)=>
+        post.title.toLowerCase().includes(searchParams)) : post;
+    
     return (
         <>
-       
+
         <h1>Post</h1>
         
+        <div>
+            <label>
+                Search: {''}
+                <input type="text" placeholder="search" onChange={(e)=>setSearchParams(e.target.value.toLowerCase())} />
+            </label>
+        </div>
+
         {post && postToDisplay.map((post)=>{
             
             return <div key={post._id}>
