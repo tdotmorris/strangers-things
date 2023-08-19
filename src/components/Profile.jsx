@@ -19,14 +19,14 @@ const Profile = () => {
     const postToDisplay=post
     return (
         <>
-        <h2>Welcome</h2>
-        <h3>Message Inbox</h3>
+       
         {post && postToDisplay.map((post)=>{
             return <h3 key={post._id}>{post.messages}{post.username}</h3>
                 
         })}
         <div>
-            <h1>Stranger's Things</h1>
+            <h1>Profile</h1>
+            <h3>Message Inbox</h3>
         </div>
         </>
     )
