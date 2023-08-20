@@ -22,7 +22,6 @@ const Profile = () => {
        
         {post && postToDisplay.map((post)=>{
             return <h3 key={post._id}>{post.messages}{post.username}</h3>
-                
         })}
         <div>
             <h1>Profile</h1>
