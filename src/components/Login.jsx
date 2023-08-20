@@ -4,9 +4,8 @@ const BaseURL=`https://strangers-things.herokuapp.com/api/${cohort}`
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 //import App from "../App";
-//"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGUxMGY5MmJlYjkzNTAwMTRjMzg2MzUiLCJ1c2VybmFtZSI6InN1cGVybWFuMzAiLCJpYXQiOjE2OTI0NzExODZ9.NZKPRcqxYRxX8so2l7FEJGMA9-O0IlHYjBk-PtWtFGM"
 
-
+// token for superman30/krypt0n0nbust = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGUxMGY5MmJlYjkzNTAwMTRjMzg2MzUiLCJ1c2VybmFtZSI6InN1cGVybWFuMzAiLCJpYXQiOjE2OTI0NzExODZ9.NZKPRcqxYRxX8so2l7FEJGMA9-O0IlHYjBk-PtWtFGM"
 
 export default function LogIn(){
     const[username,setUsername]=useState("");
@@ -26,8 +25,9 @@ export default function LogIn(){
                 },
                 body: JSON.stringify({
                     user: { 
-                        username:'',
-                        password:'',  
+                        // NEW: ADDED IN USERNAME AND PW = FIXED AUTHENTICATION FOR THIS USER/PW
+                        username:'superman30',
+                        password:'krypt0n0nbust',  
                     }
                 })
             });
@@ -58,7 +58,7 @@ return(
             </label>
            {/*  <button onClick={()=>Navigate('/Profile')}> */}
             <button>
-                Sign In
+                Log In
             </button>
         </form>
         <Link to={"/SignUp"}className='register'>Sign Up Now</Link>
