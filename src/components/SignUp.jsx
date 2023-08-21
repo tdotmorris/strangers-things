@@ -13,7 +13,7 @@ export default function SignUp({setToken}){
     const[lname,setLname]=useState("");
     const[successMessage,setSuccessMessage]=useState("");
     const[error, setError]=useState(null);
-    //const Navigate= useNavigate();
+    const Navigate= useNavigate();
 
     async function handleSubmit(event){
         event.preventDefault();
@@ -70,8 +70,8 @@ return(
                 Create Password:{''}
                 <input type="text" value={password} onChange={(event)=>setPassword(event.target.value)}/>
             </label>
-            {/* <button onClick={()=>Navigate('/Login')}> */}
-            <button>
+             
+            <button onClick={()=>Navigate('/Login')}>
                 Sign Up
             </button>
         

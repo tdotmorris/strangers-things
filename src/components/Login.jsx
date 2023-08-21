@@ -12,7 +12,7 @@ export default function LogIn(){
     const[password,setPassword]=useState("");
     const[successMessage,setSuccessMessage]=useState("");
     const[error, setError]=useState(null);
-    //const Navigate= useNavigate();
+    const Navigate= useNavigate();
     
     async function handleSubmit(event){
         event.preventDefault();
@@ -56,8 +56,8 @@ return(
                 Password:{''}
                 <input type="text" value={password} onChange={(event)=>setPassword(event.target.value)}/>
             </label>
-           {/*  <button onClick={()=>Navigate('/Profile')}> */}
-            <button>
+        
+            <button  onClick={()=>Navigate('/Profile')}>
                 Log In
             </button>
         </form>
