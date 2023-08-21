@@ -1,34 +1,53 @@
-import { FetchAllData } from "../API"
-import React, {useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
+const cohort = "2305-FTB-ET-WEB-PT";
+const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 const Profile = () => {
-    const[post, setPost]=useState('')
-    const[error, setError]=useState(null)
-    
-    useEffect(()=>{
-        async function getAllData() {
-            const APIResponse= await FetchAllData();
-            if(APIResponse.success){
-                setPost(APIResponse.data.posts);
-            }else{
-                setError(APIResponse.error.message)
-            }
-            }
-            getAllData();
-        },[]);   
-    const postToDisplay=post
-    return (
-        <>
-       
-        {post && postToDisplay.map((post)=>{
-            return <h3 key={post._id}>{post.messages}{post.username}</h3>
-                
-        })}
+  const { authToken } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`${BaseURL}/users/me`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+
+        const data = await response.json();
+        setUserData(data.user);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        // Handle the error accordingly, e.g., redirect to login page
+        navigate("/Login");
+      }
+    };
+
+    if (authToken) {
+      fetchUserData();
+    }
+  }, [authToken, navigate]);
+
+  return (
+    <div>
+      <h2>Profile</h2>
+      {userData && (
         <div>
-            <h1>Profile</h1>
-            <h3>Message Inbox</h3>
+          <p>Username: {userData.username}</p>
+          {/* Display other user data here */}
         </div>
-        </>
-    )
-}
-export default Profile
+      )}
+    </div>
+  );
+};
+
+export default Profile;
