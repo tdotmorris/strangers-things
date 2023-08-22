@@ -8,10 +8,16 @@ import Posts from './components/Posts';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Authenticate from './components/Authenticate';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
 
 
 function App() {
-  const[token,setToken]=useState(null);
+  const[token,setToken]=useState(null)
+    //if(!token){
+      //return<Login setToken={setToken}/>
+   // }
 
   return (
    
@@ -31,7 +37,7 @@ function App() {
         <Route path="/" element={<Home />} /> 
         <Route path="/Profile" element={<Profile/>}/>
         <Route path="/Posts" element={<Posts/>}/>
-        <Route path="/Login" element={<Login/>}/>
+        <Route path="/Login" element={<Login token={token}/>}/>
         <Route path="/SignUp" element={<SignUp setToken={setToken} token={token}/>}/>
         <Route path="/Authenticate" element={<Authenticate  setToken={setToken} token={token}/>}/>
       </Routes>

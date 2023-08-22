@@ -1,6 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 import { FetchAllData } from "../API"
 import React, {useState, useEffect } from 'react';
+const cohort = '2305-FTB-ET-WEB-PT'
+const BaseURL=`https://strangers-things.herokuapp.com/api/${cohort}`
+const tokenString= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGUxMGY5MmJlYjkzNTAwMTRjMzg2MzUiLCJ1c2VybmFtZSI6InN1cGVybWFuMzAiLCJpYXQiOjE2OTI0NzExODZ9.NZKPRcqxYRxX8so2l7FEJGMA9-O0IlHYjBk-PtWtFGM"
 
 const Posts = () => {
     const[post, setPost]=useState([])
@@ -27,6 +30,32 @@ const Posts = () => {
             }
             getAllData();
         },[]);   
+
+      const makePost = async()=>{
+        try { const response= await fetch(`${BaseURL}/posts`,
+        { 
+          method:'POST',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${tokenString}`
+          },
+          body: JSON.stringify({
+            post:{
+              title: "My favorite stuffed animal",
+              description:"This is a pooh doll from 1990",
+              price: "$1000",
+              willDeliver: 'True',
+            }
+          })
+        });
+          const result= await response.json();
+          console.log(result);
+          return result
+        } catch (error) {
+          console.log(error)
+        }
+      };
+      makePost();
 
 
     //const postToDisplay=post
@@ -126,4 +155,5 @@ const Posts = () => {
         </>
     )
 }
+
 export default Posts;

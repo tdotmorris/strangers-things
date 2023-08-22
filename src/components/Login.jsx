@@ -12,7 +12,7 @@ export default function LogIn(){
     const[password,setPassword]=useState("");
     const[successMessage,setSuccessMessage]=useState("");
     const[error, setError]=useState(null);
-    const Navigate= useNavigate();
+    //const Navigate= useNavigate();
     
     async function handleSubmit(event){
         event.preventDefault();
@@ -26,8 +26,10 @@ export default function LogIn(){
                 body: JSON.stringify({
                     user: { 
                         // NEW: ADDED IN USERNAME AND PW = FIXED AUTHENTICATION FOR THIS USER/PW
-                        username:'superman30',
-                        password:'krypt0n0nbust',  
+                        //username:'superman30',
+                        //password:'krypt0n0nbust',  
+                        username,
+                        password,
                     }
                 })
             });
@@ -56,8 +58,8 @@ return(
                 Password:{''}
                 <input type="text" value={password} onChange={(event)=>setPassword(event.target.value)}/>
             </label>
-        
-            <button  onClick={()=>Navigate('/Profile')}>
+        {/* removed useNavigate temp onClick={()=>Navigate('/Profile')} */}
+            <button>
                 Log In
             </button>
         </form>
