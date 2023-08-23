@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import { FetchAllData } from './API'
 import { Routes, Route, Link } from "react-router-dom";
@@ -7,18 +7,16 @@ import Profile from './components/Profile';
 import Posts from './components/Posts';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Authenticate from './components/Authenticate';
+import Authenticate from './components/TokenStorage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-
+//import { sessionStorage } from './session-storage';
 
 
 function App() {
-  const[token,setToken]=useState(null)
-    //if(!token){
-      //return<Login setToken={setToken}/>
-   // }
+  const[token,setToken]=useState();
 
+  
   return (
    
     <>
@@ -35,8 +33,8 @@ function App() {
       <div id='contents'>
       <Routes>
         <Route path="/" element={<Home />} /> 
-        <Route path="/Profile" element={<Profile/>}/>
-        <Route path="/Posts" element={<Posts/>}/>
+        <Route path="/Profile" element={<Profile token={token}/>}/>
+        <Route path="/Posts" element={<Posts token={token}/>}/>
         <Route path="/Login" element={<Login token={token}/>}/>
         <Route path="/SignUp" element={<SignUp setToken={setToken} token={token}/>}/>
         <Route path="/Authenticate" element={<Authenticate  setToken={setToken} token={token}/>}/>
