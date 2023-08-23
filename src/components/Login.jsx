@@ -1,72 +1,76 @@
-import React, { useState, useContext } from "react";
-import { AuthContext } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useState, } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-const cohort = "2305-FTB-ET-WEB-PT";
+const cohort = '2305-FTB-ET-WEB-PT';
 const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
-const Login = () => {
-  const { setAuthToken } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-  });
 
-  const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+export default function LogIn({ setToken }) {
+  
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
+   
+    
+    async function handleSubmit(event) {
+        event.preventDefault();
+        try {
+            const APIResponse = await fetch(`${BaseURL}/users/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user: {
+                        username,
+                        password,
+                    }
+                })
+            });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log("Starting login process...");
-    try {
-      console.log("Sending fetch request...");
-      const response = await fetch(`${BaseURL}/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user: formData, // Nest formData inside 'user' key
-        }),
-      });
+            const result = await APIResponse.json();
+            console.log('Full API Response:', result);
 
-      if (!response.ok) {
-        throw new Error("Login failed!");
-      }
 
-      const data = await response.json();
+            if (result.data && result.data.token) {
+                
+                localStorage.setItem('authToken', result.data.token);
+               // Store the token in local storage
+                setToken(result.data.token); // Store the token in App's state.
+                setSuccessMessage(result.message);
+                setUsername('');
+                setPassword('');
 
-      console.log("Received data:", data);
+                // Redirect to Profile route after successful login.
+            } else {
+                setError(result.error.message || "Unexpected error occurred."); // Handle potential server-side errors
+            }
 
-      if (data.data && data.data.token) {
-        console.log("Setting Auth Token and Redirecting...");
-        setAuthToken(data.token);
-        sessionStorage.setItem("token", data.token);
-        navigate("/Profile");
-      } else {
-        console.log("Token not received");
-      }
-    } catch (error) {
-      console.error("Error logging in:", error);
-      // Handle the error accordingly
+        } catch (error) {
+            setError(error.message);
+        }
     }
-  };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        name="username"
-        onChange={handleInputChange}
-        placeholder="Username"
-      />
-      <input
-        type="password"
-        name="password"
-        onChange={handleInputChange}
-        placeholder="Password"
-      />
-      <button type="submit">Login</button>
-    </form>
-  );
-};
-
-export default Login;
+    return (
+        <div>
+            <h1>Log In</h1>
+            {successMessage && <p>{successMessage}</p>}
+            {error && <p>{error}</p>}
+            <form onSubmit={handleSubmit}>
+                <label>
+                    Username: {' '}
+                    <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />
+                </label>
+                <br />
+                <label>
+                    Password: {' '}
+                    <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+                </label>
+                <br />
+                <button>Log In</button>
+            </form>
+            <Link to={"/SignUp"} className='register'>Sign Up Now</Link>
+        </div>
+    );
+}

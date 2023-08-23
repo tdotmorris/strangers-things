@@ -1,4 +1,4 @@
- @import url('https://fonts.googleapis.com/css2?family=Tilt+Prism&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tilt+Prism&display=swap');
 
 :root {
   display: flex;
@@ -32,17 +32,6 @@ a {
 a:hover {
   color: #104932;
 }
-.home{
-  display: flex;
-  align-content: space-between;
-  font-weight: 500;
-  color:black;
-  text-decoration: inherit;
-  border:white;
-  border-style: solid;
-  border-width: 10px;
-  margin-right: 2px;
-}
 
 #container {
   margin: 0;
@@ -71,10 +60,15 @@ h1 {
   background-color: #104932;
   padding: 60px;
 }
+.register{
+  background-color: white;
+  margin-top: 20px;
+}
 #navbar{
   display: flex;
   flex-direction: row;
   align-items: flex-end;
+  justify-content: space-between;
 }
 
 #logo{
@@ -92,12 +86,12 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #055711;
+  background-color: white;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: black;
 }
 button:focus,
 button:focus-visible {
@@ -108,4 +102,16 @@ img{
   width: 480px;
   padding: 10px;
 }
+form {
+  display: flex;
+  flex-direction: column;
+  background-color: #e0d9ce;
+  align-items: center;
+  font-family: 'Inria Serif', serif;
+  font-size: 20px;
+}
 
+.new-post {
+  font-family: 'Inria Serif', serif;
+  font-size: 20px;
+}
