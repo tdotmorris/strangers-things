@@ -1,198 +1,140 @@
 import { useSearchParams } from "react-router-dom";
-import { FetchAllData } from "../API"
-import React, {useState, useEffect } from 'react';
-const cohort = '2305-FTB-ET-WEB-PT'
-const BaseURL=`https://strangers-things.herokuapp.com/api/${cohort}`
-//const tokenString= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGUxMGY5MmJlYjkzNTAwMTRjMzg2MzUiLCJ1c2VybmFtZSI6InN1cGVybWFuMzAiLCJpYXQiOjE2OTI0NzExODZ9.NZKPRcqxYRxX8so2l7FEJGMA9-O0IlHYjBk-PtWtFGM"
+import { FetchAllData } from "../API";
+import React, { useState, useEffect } from 'react';
 
-const Posts = ({token}) => {
-    
-    
-    const[post, setPost]=useState([])
-    const[error, setError]=useState(null)
-    const[searchParams,setSearchParams]=useState("")
-    // const searchParams=useSearchParams
-    // create new post variables
+const cohort = '2305-FTB-ET-WEB-PT';
+const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
+
+const Posts = () => {
+    const tokenString = localStorage.getItem('authToken'); 
+  
+
+
+    const [post, setPost] = useState([]);
+    const [error, setError] = useState(null);
+    const [searchParams, setSearchParams] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [price, setPrice] = useState("");
-  
-    // delivery button
     const [willDeliver, setWillDeliver] = useState(false);
-    
- 
-    
-        
 
-    useEffect(()=>{
+    useEffect(() => {
         async function getAllData() {
-            const APIResponse= await FetchAllData('https://strangers-things.herokuapp.com/api/2305-FTB-ET-WEB-PT/posts')
-            if(APIResponse.success){
+            const APIResponse = await FetchAllData(`${BaseURL}/posts`);
+            if (APIResponse.success) {
                 setPost(APIResponse.data.posts);
-            }else{
-              setError(APIResponse.error.message)
+            } else {
+                setError(APIResponse.error.message);
             }
-            }
-            getAllData();
-        },[]);   
-
-        // trying to retrieve the token from localStorage
-     
-        
-      
-
-     const makePost = async()=>{
-        try { const response= await fetch(`${BaseURL}/posts`,
-        { 
-          method:'POST',
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            post:{
-              title: "My favorite stuffed animal",
-              description:"This is a pooh doll from 1990",
-              price: "$1000",
-              willDeliver: 'True',
-            }
-          })
-        });
-          const result= await response.json();
-          console.log("Received Token:", result.data.token);
-          localStorage.getItemItem('authtoken', result.data.token)
-          console.log(result);
-          return result
-        } catch (error) {
-          console.log(error)
         }
-      };
-      makePost();
+        getAllData();
+    }, []);
 
-   /*   const editPost = async()=>{
-        try { 
-          const response= await fetch(`${BaseURL}/posts/POST_ID`,
-        { 
-          method:'PATCH',
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            post:{
-              title: "My favorite stuffed animal",
-              description:"This is a pooh doll from 1990",
-              price: "$1000",
-              willDeliver: 'True',
-            }
-          })
-        });
-          const result= await response.json();
-          console.log(result);
-          return result
+    const makePost = async () => {
+        try {
+            const response = await fetch(`${BaseURL}/posts`, {
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${tokenString}`
+                },
+                body: JSON.stringify({
+                    post: {
+                        title: title,
+                        description: description,
+                        price: price,
+                        willDeliver: willDeliver
+                    }
+                })
+            });
+            const result = await response.json();
+            return result;
         } catch (error) {
-          console.log(error)
+            console.error(error);
+            return { success: false, error: error.message };
         }
-      };
-      editPost();*/
-      
+    };
 
-    //const postToDisplay=post
-        const postToDisplay=useSearchParams ? post.filter((post)=>
-        post.title.toLowerCase().includes(searchParams)) : post;
-    
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!tokenString) {
+            setError("You must be logged in to make a post.");
+            return;
+        }
+
+        const result = await makePost();
+        if (result && result.success) {
+            setSuccessMessage("Post created successfully!");
+            setTitle("");
+            setDescription("");
+            setPrice("");
+            setWillDeliver(false);
+            // Optionally refresh posts after creation
+            const APIResponse = await FetchAllData(`${BaseURL}/posts`);
+            if (APIResponse.success) {
+                setPost(APIResponse.data.posts);
+            }
+        } else {
+            setError(result.error.message);
+        }
+    };
+
+    const postToDisplay = searchParams 
+        ? post.filter(p => p.title.toLowerCase().includes(searchParams.toLowerCase()))
+        : post;
+
     return (
         <>
-
-        {/* create new post */}
-        <div className = "new-post">
-        <h2>Create New Post</h2>
-      {successMessage && <p>{successMessage}</p>}
-      {error && <p>{error}</p>}
-      {/* ORIGINAL = <form onSubmit={handleSubmit}> but I had to get rid of the handleSubmit temporarily */}
-      <form>
-        <label>
-          Title:{" "}
-          <input 
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </label>
-        <label>
-          Description:{" "}
-          <input
-            type="text"
-            value={description}
-            onChange={(e) => {
-              setDescription(e.target.value);}}
-          />
-        </label>
-        <label>
-          Price:{" "}
-          <input 
-            type="text"
-            placeholder="$0.00"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-          />
-        </label>
-
-        {/* delivery button */}
-        <label>
-          Will Deliver:
-          <label>
-            <input
-              type="radio"
-              value="true"
-              name="willDeliver"
-              checked={willDeliver === true}
-              onChange={() => setWillDeliver(true)}
-            />
-            Yes
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="false"
-              name="willDeliver"
-              checked={willDeliver === false}
-              onChange={() => setWillDeliver(false)}
-            />
-            No
-          </label>
-        </label>
-
-        <button style = {{border: "2px solid #242424", padding: "5px"}}>Submit New Post</button>
-      </form>
-      <button style = {{border: "2px solid #242424", padding: "5px"}}>Edit Post</button>
-      </div>
-
-      {/* end of create new post */}
-  
-        <h1>Posts</h1>
-        
-        <div>
-            <label>
-                Search: {''}
-                <input type="text" placeholder="Search" onChange={(e)=>setSearchParams(e.target.value.toLowerCase())} />
-            </label>
-        </div>
-
-        {post && postToDisplay.map((post)=>{
-            
-            return <div key={post._id}>
-                <h3>{post.title}</h3>
-                <h4>{post.username}</h4>
-                <h4>{post.description}</h4>
-                <h4>{post.price}</h4>
-                <h4>{post.location}</h4>
-                <h4>{post.willDeliver}</h4>
+            {tokenString && (
+                <div className="new-post">
+                    <h2>Create New Post</h2>
+                    {successMessage && <p>{successMessage}</p>}
+                    {error && <p>{error}</p>}
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            Title:
+                            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+                        </label>
+                        <br />
+                        <label>
+                            Description:
+                            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                        </label>
+                        <br />
+                        <label>
+                            Price:
+                            <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
+                        </label>
+                        <br />
+                        <label>
+                            Will Deliver:
+                            <input type="checkbox" checked={willDeliver} onChange={(e) => setWillDeliver(e.target.checked)} />
+                        </label>
+                        <br />
+                        <button style={{ border: "2px solid #242424", padding: "5px" }}>Submit New Post</button>
+                    </form>
                 </div>
+            )}
 
-        })}
-        
+            <h1>Posts</h1>
+
+            <div>
+                <label>
+                    Search: {' '}
+                    <input type="text" placeholder="Search" onChange={(e) => setSearchParams(e.target.value)} />
+                </label>
+            </div>
+
+            {postToDisplay.map((p) => (
+                <div key={p._id}>
+                    <h3>{p.title}</h3>
+                    <p>{p.description}</p>
+                    <p>Price: {p.price}</p>
+                    <p>Will Deliver: {p.willDeliver ? 'Yes' : 'No'}</p>
+                </div>
+            ))}
         </>
     )
 }
