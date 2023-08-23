@@ -36,7 +36,7 @@ a:hover {
 #container {
   margin: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -47,7 +47,9 @@ a:hover {
   background-color: #e0d9ce;
 
 }
-
+.new-post{
+  background-color: white;
+}
 h1 {
   font-size: 3.2em; 
   line-height: 1.1;

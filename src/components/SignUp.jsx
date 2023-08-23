@@ -14,11 +14,12 @@ export default function SignUp({setToken}){
     const[lname,setLname]=useState("");
     const[successMessage,setSuccessMessage]=useState("");
     const[error, setError]=useState(null);
-    //const Navigate= useNavigate();
+    const Navigate= useNavigate();
     //const notify=()=>("Thanks for signing up!")
 
     async function handleSubmit(event){
         event.preventDefault();
+        Navigate('/Login')
         try {
             const APIResponse= await fetch(`${BaseURL}/users/register`,
             {
@@ -39,7 +40,7 @@ export default function SignUp({setToken}){
             });
             const result= await APIResponse.json();
             console.log("SignUp Result:",result);
-            setToken(result.token);
+            setToken(result.data.token);
             setSuccessMessage(result.message);
             setFname('');
             setLname('');
@@ -76,7 +77,7 @@ return(
                 <input type="text" value={password} onChange={(event)=>setPassword(event.target.value)}/>
             </label>
              {/* removed useNav temp onClick={()=>Navigate('/Login')} */}
-            <button type="submit">
+            <button>
                 Sign Up
             </button>
         </form>

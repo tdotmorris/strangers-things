@@ -3,9 +3,11 @@ import { FetchAllData } from "../API"
 import React, {useState, useEffect } from 'react';
 const cohort = '2305-FTB-ET-WEB-PT'
 const BaseURL=`https://strangers-things.herokuapp.com/api/${cohort}`
-const tokenString= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGUxMGY5MmJlYjkzNTAwMTRjMzg2MzUiLCJ1c2VybmFtZSI6InN1cGVybWFuMzAiLCJpYXQiOjE2OTI0NzExODZ9.NZKPRcqxYRxX8so2l7FEJGMA9-O0IlHYjBk-PtWtFGM"
+//const tokenString= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGUxMGY5MmJlYjkzNTAwMTRjMzg2MzUiLCJ1c2VybmFtZSI6InN1cGVybWFuMzAiLCJpYXQiOjE2OTI0NzExODZ9.NZKPRcqxYRxX8so2l7FEJGMA9-O0IlHYjBk-PtWtFGM"
 
-const Posts = () => {
+const Posts = ({token}) => {
+    
+    
     const[post, setPost]=useState([])
     const[error, setError]=useState(null)
     const[searchParams,setSearchParams]=useState("")
@@ -15,9 +17,13 @@ const Posts = () => {
     const [description, setDescription] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [price, setPrice] = useState("");
-
+  
     // delivery button
     const [willDeliver, setWillDeliver] = useState(false);
+    
+ 
+    
+        
 
     useEffect(()=>{
         async function getAllData() {
@@ -25,19 +31,53 @@ const Posts = () => {
             if(APIResponse.success){
                 setPost(APIResponse.data.posts);
             }else{
-                setError(APIResponse.error.message)
+              setError(APIResponse.error.message)
             }
             }
             getAllData();
         },[]);   
 
-      const makePost = async()=>{
+        // trying to retrieve the token from localStorage
+     
+        
+      
+
+     const makePost = async()=>{
         try { const response= await fetch(`${BaseURL}/posts`,
         { 
           method:'POST',
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${tokenString}`
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            post:{
+              title: "My favorite stuffed animal",
+              description:"This is a pooh doll from 1990",
+              price: "$1000",
+              willDeliver: 'True',
+            }
+          })
+        });
+          const result= await response.json();
+          console.log("Received Token:", result.data.token);
+          localStorage.getItemItem('authtoken', result.data.token)
+          console.log(result);
+          return result
+        } catch (error) {
+          console.log(error)
+        }
+      };
+      makePost();
+
+   /*   const editPost = async()=>{
+        try { 
+          const response= await fetch(`${BaseURL}/posts/POST_ID`,
+        { 
+          method:'PATCH',
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify({
             post:{
@@ -55,8 +95,8 @@ const Posts = () => {
           console.log(error)
         }
       };
-      makePost();
-
+      editPost();*/
+      
 
     //const postToDisplay=post
         const postToDisplay=useSearchParams ? post.filter((post)=>
@@ -126,10 +166,11 @@ const Posts = () => {
 
         <button style = {{border: "2px solid #242424", padding: "5px"}}>Submit New Post</button>
       </form>
+      <button style = {{border: "2px solid #242424", padding: "5px"}}>Edit Post</button>
       </div>
 
       {/* end of create new post */}
-
+  
         <h1>Posts</h1>
         
         <div>
