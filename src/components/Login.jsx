@@ -1,6 +1,7 @@
 import { useState, } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import Profile from "./Profile";
+import Home from "./Home";
 const cohort = '2305-FTB-ET-WEB-PT';
 const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 
@@ -52,9 +53,11 @@ export default function LogIn({ setToken }) {
             setError(error.message);
         }
     }
-
+  
     return (
-        <div>
+        <div className="login">
+        <Profile username={username}/>
+        <Home username={username}/>
             <h1>Log In</h1>
             {successMessage && <p>{successMessage}</p>}
             {error && <p>{error}</p>}

@@ -54,7 +54,7 @@ export default function SignUp({setToken}){
     }
 
 return(
-    <div>
+    <div className="signup">
         <h1>Create Your Profile</h1>
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}
