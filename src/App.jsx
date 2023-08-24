@@ -43,7 +43,7 @@ function App() {
           Profile
         </Link>
         <h1 id="logo">Stranger's Things</h1>
-        {isLoggedIn && <span>Welcome, {username}!</span>}
+       
         <Link to={"/Posts"} className="posts">
           Posts
         </Link>
@@ -53,7 +53,9 @@ function App() {
             <button
               onClick={() => {
                 setToken(null);
-                setUsername(data.data.username); // <-- Clear the username when logging out
+                setUsername(""); 
+                setIsLoggedIn(false);
+                // <-- Clear the username when logging out
                 localStorage.removeItem("authToken");
               }}
             >

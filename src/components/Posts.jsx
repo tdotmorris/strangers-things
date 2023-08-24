@@ -5,7 +5,7 @@ const cohort = "2305-FTB-ET-WEB-PT";
 const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 
 const Posts = ({ token, username }) => {
-    console.log("Username inside Posts component:", username);
+  console.log("Username inside Posts component:", username);
   const tokenString = localStorage.getItem("authToken");
 
   const [post, setPost] = useState([]);
@@ -16,6 +16,7 @@ const Posts = ({ token, username }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [price, setPrice] = useState("");
   const [willDeliver, setWillDeliver] = useState(false);
+  const [isEditing, setIsEditing] = useState(null);
 
   useEffect(() => {
     async function getAllData() {
@@ -53,22 +54,60 @@ const Posts = ({ token, username }) => {
       return { success: false, error: error.message };
     }
   };
+  const handleEdit = (postId) => {
+    // Find the post by its ID
+    const postToEdit = post.find((p) => p._id === postId);
+
+    // Populate the form fields with the post data
+    setTitle(postToEdit.title);
+    setDescription(postToEdit.description);
+    setPrice(postToEdit.price);
+    setWillDeliver(postToEdit.willDeliver);
+
+    // Set the editing state
+    setIsEditing(postId);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!tokenString) {
-      setError("You must be logged in to make a post.");
+      setError("You must be logged in to perform this action.");
       return;
     }
 
-    const result = await makePost();
+    const postDetails = {
+      post: {
+        title,
+        description,
+        price,
+        willDeliver,
+      },
+    };
+
+    let result;
+
+    if (isEditing) {
+      // Updating a post
+      result = await updatePost(isEditing, postDetails);
+    } else {
+      // Creating a new post
+      result = await makePost(postDetails);
+    }
+
     if (result && result.success) {
-      setSuccessMessage("Post created successfully!");
+      setSuccessMessage(
+        isEditing ? "Post updated successfully!" : "Post created successfully!"
+      );
+
+      // Reset form fields and editing state
       setTitle("");
       setDescription("");
       setPrice("");
       setWillDeliver(false);
+      setIsEditing(null);
+
+      // Fetch the updated list of posts
       const APIResponse = await FetchAllData(`${BaseURL}/posts`);
       if (APIResponse.success) {
         setPost(APIResponse.data.posts);
@@ -78,15 +117,62 @@ const Posts = ({ token, username }) => {
     }
   };
 
+  const updatePost = async (postId, postData) => {
+    try {
+      const response = await fetch(`${BaseURL}/posts/${postId}`, {
+        method: "PATCH", // or "PUT" depending on your API
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(postData),
+      });
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error(error);
+      return { success: false, error: error.message };
+    }
+  };
+
   const postToDisplay = searchParams
     ? post.filter((p) =>
         p.title.toLowerCase().includes(searchParams.toLowerCase())
       )
     : post;
 
-  const handleSendMessage = (postId) => {
-    // Assuming you would navigate to another page or open a modal/dialog to send a message.
-    alert(`Sending message to post with ID: ${postId}`);
+  const handleSendMessage = async (postId) => {
+    const messageContent = prompt("Enter your message:");
+
+    // If the user presses cancel on the prompt, messageContent will be null.
+    if (!messageContent) return;
+
+    try {
+      const response = await fetch(`${BaseURL}/posts/${postId}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenString}`, // Make sure to have the token string here.
+        },
+        body: JSON.stringify({
+          message: {
+            content: messageContent,
+          },
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Display some feedback, like an alert or update the UI in some way
+        alert("Message sent successfully!");
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.error.message}`);
+      }
+    } catch (error) {
+      console.error("Failed to send message:", error);
+      alert("An error occurred while sending the message.");
+    }
   };
 
   const handleViewMessages = (postId) => {
@@ -125,7 +211,6 @@ const Posts = ({ token, username }) => {
     }
   };
 
- 
   return (
     <>
       {tokenString && (
@@ -170,7 +255,7 @@ const Posts = ({ token, username }) => {
             </label>
             <br />
             <button style={{ border: "2px solid #242424", padding: "5px" }}>
-              Submit New Post
+            {isEditing ? "Update Post" : "Submit New Post"}
             </button>
           </form>
         </div>
@@ -196,13 +281,20 @@ const Posts = ({ token, username }) => {
           <p>Will Deliver: {p.willDeliver ? "Yes" : "No"}</p>
 
           {tokenString && p.author.username !== username && (
-            <button onClick={() => handleSendMessage(p._id)}>Send Message</button>
+            <button onClick={() => handleSendMessage(p._id)}>
+              Send Message
+            </button>
           )}
 
           {tokenString && p.author.username === username && (
             <>
-              <button onClick={() => handleDelete(p._id, p.author.username)}>Delete</button>
-              <button onClick={() => handleViewMessages(p._id)}>View Messages</button>
+              <button onClick={() => handleDelete(p._id, p.author.username)}>
+                Delete
+              </button>
+              <button onClick={() => handleEdit(p._id)}>Edit</button>{" "}
+              <button onClick={() => handleViewMessages(p._id)}>
+                View Messages
+              </button>
             </>
           )}
         </div>
