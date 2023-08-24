@@ -57,8 +57,6 @@ export default function LogIn({ setToken }) {
     return (
         <div className="login">
 
-        <Profile username={username}/>
-
             <h1>Log In</h1>
             {successMessage && <p>{successMessage}</p>}
             {error && <p>{error}</p>}
