@@ -10,7 +10,10 @@ export default function LogIn({ setToken }) {
     const [password, setPassword] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [error, setError] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
     const navigate = useNavigate();
+    
+
    
     
     async function handleSubmit(event) {
@@ -37,12 +40,16 @@ export default function LogIn({ setToken }) {
                 
                 localStorage.setItem('authToken', result.data.token);
                // Store the token in local storage
-                setToken(result.data.token); // Store the token in App's state.
-                setSuccessMessage(result.message);
+                setToken(result.data.token); 
+                setCurrentUser(result.data.user); 
+                setSuccessMessage(result.message|| "Successfully logged in!");
                 setUsername('');
                 setPassword('');
 
-                // Redirect to Profile route after successful login.
+                setSuccessMessage("Successfully logged in!");
+                setTimeout(() => {
+                    navigate("/profile");
+                }, 2000);  // redirect after 2 seconds
             } else {
                 setError(result.error.message || "Unexpected error occurred."); // Handle potential server-side errors
             }
@@ -55,6 +62,8 @@ export default function LogIn({ setToken }) {
     return (
         <div>
             <h1>Log In</h1>
+            {currentUser && <p>Welcome back, {currentUser.username}!</p>}
+
             {successMessage && <p>{successMessage}</p>}
             {error && <p>{error}</p>}
             <form onSubmit={handleSubmit}>

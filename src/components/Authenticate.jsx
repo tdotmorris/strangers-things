@@ -6,18 +6,34 @@ export default async function Authenticate(token) {
         const APIResponse = await fetch(`${BaseURL}/users/me`, {
             method: "GET",
             headers: {
-                'Content-type': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             },
         });
         
         const result = await APIResponse.json();
+        console.log('API Response:', result);
+
         if (!APIResponse.ok) {
             throw new Error(result.error || 'Authentication failed');
         }
 
-        console.log(result);
-        return result;
+        // Check if the data property exists
+        if (!result.data) {
+            console.error("Unexpected API structure. User data missing.");
+            return { success: false, error: "User data missing from API response" };
+        }
+
+        // Extracting user data from the 'data' property
+        const userData = {
+            username: result.data.username || null,
+            posts: result.data.posts || [],
+            messages: result.data.messages || [],
+            _id: result.data._id || null
+        };
+
+        console.log('Extracted User Data:', userData);
+        return userData;
 
     } catch (error) {
         console.error(error);
