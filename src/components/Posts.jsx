@@ -1,14 +1,19 @@
-import { useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { FetchAllData } from "../API";
 import React, { useState, useEffect } from 'react';
+import EditPost from "./EditPost";
+import Post from "./Post";
 
 const cohort = '2305-FTB-ET-WEB-PT';
 const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 
-const Posts = () => {
+
+
+const Posts = ({token,onUpdatePost}) => {
     const tokenString = localStorage.getItem('authToken'); 
   
     const [post, setPost] = useState([]);
+    //const[updatePost,setUpdatePost]=useState([]);
     const [error, setError] = useState(null);
     const [searchParams, setSearchParams] = useState("");
     const [title, setTitle] = useState("");
@@ -16,6 +21,15 @@ const Posts = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [price, setPrice] = useState("");
     const [willDeliver, setWillDeliver] = useState(false);
+    //const navigate=useNavigate()
+//state for conditional render of edit form
+    const[isEditing,setIsEditing]=useState(false);
+    const[editForm,setEditForm]=useState({
+        title: '',
+        description:'',
+        price:'',
+        willDeliver:'',
+    })
 
     useEffect(() => {
         async function getAllData() {
@@ -48,6 +62,34 @@ const Posts = () => {
             return { success: false, error: error.message };
         }
     };
+//when PATCH request happens;auto-hides the form, pushes changes to display
+    function handlePostUpdate(updatedPost){
+        setIsEditing(false);
+        onUpdatePost(updatedPost);
+    }
+//capture user input in edit form inputs
+    function handleChange(e){
+        setEditForm({
+            ...editForm,
+            [e.target.post]: e.target.value
+        })
+    }
+//needed logic for conditional rendering of form
+    const changeEditState=(post)=>{
+        if(post._id===editForm.id){
+            setIsEditing(isEditing=>!isEditing)//hides the form
+        }else if(isEditing===false){
+            setIsEditing(isEditing=>!isEditing)//shows the form
+        }
+        }
+
+    const captureEdit=(clickedPost)=>{
+        const filtered=post
+        post.filter(p=>p._id===clickedPost)
+        setEditForm(filtered[0])
+    }
+
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -71,18 +113,61 @@ const Posts = () => {
             }
         } else {
             setError(result.error.message);
-        }
+        }    
     };
-
+    //Search Bar
     const postToDisplay = searchParams 
         ? post.filter(p => p.title.toLowerCase().includes(searchParams.toLowerCase()))
         : post;
-
+        
+ 
     return (
         <>
+        <h1>Recent Posts</h1>
+    
+        <div className="search-bar">
+             <label>
+            Search: {' '}
+            <input type="text" placeholder="Search" onChange={(e) => setSearchParams(e.target.value)} />
+             </label>
+        </div>
+
+            
+        {isEditing ?
+          (<EditPost
+          editForm={editForm}
+          setPost={setPost}
+          
+          title={title} setTitle={setTitle}
+          description={description} setDescription={setDescription}
+          price={price} setPrice={setPrice}
+          willDeliver={willDeliver} setWillDeliver={setWillDeliver}
+
+          handleChange={handleChange}
+          handlePostUpdate={handlePostUpdate}
+         
+    />) :null}
+        
+             
+             {post.map(post => 
+             
+             (<Post
+             key={post._id}
+             post={post}
+             title={title} setTitle={setTitle}
+             description={description} setDescription={setDescription}
+             price={price} setPrice={setPrice}
+             willDeliver={willDeliver} setWillDeliver={setWillDeliver}
+             captureEdit={captureEdit}
+             changeEditState={changeEditState}
+             />)
+                
+            )} 
+             
+           
+           <h1>Create New Post</h1>
             {tokenString && (
                 <div className="new-post">
-                    <h2>Create New Post</h2>
                     {successMessage && <p>{successMessage}</p>}
                     {error && <p>{error}</p>}
                     <form onSubmit={handleSubmit}>
@@ -111,25 +196,10 @@ const Posts = () => {
                 </div>
             )}
 
-            <h1>Posts</h1>
-
-            <div className="search-bar">
-                <label>
-                    Search: {' '}
-                    <input type="text" onChange={(e) => setSearchParams(e.target.value)} />
-                </label>
-            </div>
-
-            {postToDisplay.map((p) => (
-                <div key={p._id} className="post-item">
-                    <h3>{p.title}</h3>
-                    <p>{p.description}</p>
-                    <p>Price: {p.price}</p>
-                    <p>Will Deliver: {p.willDeliver ? 'Yes' : 'No'}</p>
-                </div>
-            ))}
         </>
     )
-}
+    }
+
+
 
 export default Posts;

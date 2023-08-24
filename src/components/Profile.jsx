@@ -1,7 +1,8 @@
 import { FetchAllData } from "../API"
 import React, {useState, useEffect } from 'react';
+import App from "../App";
 
-const Profile = () => {
+const Profile = ({username}) => {
     const[post, setPost]=useState('')
     const[error, setError]=useState(null)
     
@@ -18,14 +19,16 @@ const Profile = () => {
         },[]);   
 
     const postToDisplay=post
+   
     return (
         <>
        
         {post && postToDisplay.map((post)=>{
             return <h3 key={post._id}>{post.messages}{post.username}</h3>
         })}
+    
         <div>
-            <h1>Profile</h1>
+            <h1>Welcome {username}</h1>
             <h3>Message Inbox</h3>
 
         </div>

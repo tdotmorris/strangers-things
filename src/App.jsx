@@ -6,15 +6,23 @@ import Posts from './components/Posts';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Authenticate from './components/Authenticate';
+import EditPost from './components/EditPost';
+import Post from './components/Post';
 import 'react-toastify/dist/ReactToastify.css';
+import { FetchAllData } from './API';
+
+const cohort = '2305-FTB-ET-WEB-PT';
+const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 
 function App() {
   const [token, setToken] = useState(localStorage.getItem('authToken'));
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const[username,setUsername]=useState('');
 
   useEffect(() => {
     if (token) {
-      Authenticate(token).then(data => {
+      Authenticate(token)
+      .then(data => {
         if (data && data.username) { // Adjust based on your API's response
           setIsLoggedIn(true);
         } else {
@@ -27,8 +35,10 @@ function App() {
       });
     }
   }, [token]);
-
+  
+ 
   return (
+  
     <>
       <header className='banner'></header>
       <div id="navbar">
@@ -49,11 +59,13 @@ function App() {
       
       <div id='contents'>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Profile" element={<Profile />} />
-          <Route path="/Posts" element={<Posts />} />
+          <Route path="/" element={<Home username={username} />} />
+          <Route path="/Profile" element={<Profile username={username}/>} />
+          <Route path="/Posts" element={<Posts  />} />
           <Route path="/Login" element={<Login setToken={setToken} />} />
           <Route path="/SignUp" element={<SignUp setToken={setToken} />} />
+          <Route path="/EditPost" element={<EditPost token={token}/>}/>
+          <Route path="/Post" element={<Post/>}/>
         </Routes>
       </div>
     </>

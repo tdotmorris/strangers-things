@@ -1,4 +1,5 @@
-const Home = () => {    
+
+const Home = ({username}) => {    
     return (
         <>
             <div id ="home">
