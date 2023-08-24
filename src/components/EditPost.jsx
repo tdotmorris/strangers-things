@@ -108,7 +108,7 @@ const UpdatePost=async ()=>{
                             <input type="checkbox" checked={willDeliver} onChange={(e) => setWillDeliver(e.target.checked)} />
                         </label>
                         <br />
-                   <button style={{ border: "2px solid #242424", padding: "5px" }}> Submit Update </button>
+                   <button>Confirm Changes</button>
                
                     </form>
                 </div>
