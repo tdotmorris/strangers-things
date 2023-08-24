@@ -11,9 +11,7 @@ const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 
 const Posts = ({token,onUpdatePost}) => {
     const tokenString = localStorage.getItem('authToken'); 
-    //const {POST_ID}=useParams();
-
-
+  
     const [post, setPost] = useState([]);
     //const[updatePost,setUpdatePost]=useState([]);
     const [error, setError] = useState(null);
@@ -45,21 +43,16 @@ const Posts = ({token,onUpdatePost}) => {
         getAllData();
     }, []);
 
-    const makePost = async () => {
+    const makePost = async (postId) => {
         try {
-            const response = await fetch(`${BaseURL}/posts`, {
+            const response = await fetch(`${BaseURL}/posts/${postId}`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${tokenString}`
                 },
                 body: JSON.stringify({
-                    post: {
-                        title: title,
-                        description: description,
-                        price: price,
-                        willDeliver: willDeliver
-                    }
+                    isActive: false
                 })
             });
             const result = await response.json();
@@ -198,12 +191,11 @@ const Posts = ({token,onUpdatePost}) => {
                             <input type="checkbox" checked={willDeliver} onChange={(e) => setWillDeliver(e.target.checked)} />
                         </label>
                         <br />
-                        <button style={{ border: "2px solid #242424", padding: "5px" }}>Submit New Post</button>
+                        <button>Submit New Post</button>
                     </form>
                 </div>
             )}
-                  
-           
+
         </>
     )
     }

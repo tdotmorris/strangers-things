@@ -56,8 +56,9 @@ export default function LogIn({ setToken }) {
   
     return (
         <div className="login">
+
         <Profile username={username}/>
-        <Home username={username}/>
+
             <h1>Log In</h1>
             {successMessage && <p>{successMessage}</p>}
             {error && <p>{error}</p>}
@@ -74,7 +75,7 @@ export default function LogIn({ setToken }) {
                 <br />
                 <button>Log In</button>
             </form>
-            <Link to={"/SignUp"} className='register'>Sign Up Now</Link>
+            <Link to={"/SignUp"} className='register'>Don't have an account yet? Sign Up</Link>
         </div>
     );
 }

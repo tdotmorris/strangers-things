@@ -17,6 +17,7 @@ const Profile = ({username}) => {
             }
             getAllData();
         },[]);   
+
     const postToDisplay=post
    
     return (
@@ -29,6 +30,7 @@ const Profile = ({username}) => {
         <div>
             <h1>Welcome {username}</h1>
             <h3>Message Inbox</h3>
+
         </div>
         </>
     )

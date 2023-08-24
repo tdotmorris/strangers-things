@@ -2,8 +2,8 @@
 const Home = ({username}) => {    
     return (
         <>
-            <div id="home">
-                <h1>Welcome {username}</h1>
+            <div id ="home">
+                <h1>Welcome</h1>
                 <img src="chair.webp" alt="brown chair"></img>
                 <img src="green-canvas.webp" alt="green canvas"></img>
                 <img src="Lamp.webp" alt="decor lamp"></img>
@@ -14,8 +14,6 @@ const Home = ({username}) => {
                 <img src="https://images.unsplash.com/photo-1484788984921-03950022c9ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3032&q=80" alt="computer"></img>
                 <img src="https://images.unsplash.com/photo-1567763745030-bfe9c51bec27?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2980&q=80" alt="plates"></img>
             </div>
-
-            
         </>
     );
 }
