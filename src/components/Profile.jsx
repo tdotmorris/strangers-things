@@ -16,6 +16,7 @@ const Profile = () => {
             }
             getAllData();
         },[]);   
+
     const postToDisplay=post
     return (
         <>
@@ -26,6 +27,7 @@ const Profile = () => {
         <div>
             <h1>Profile</h1>
             <h3>Message Inbox</h3>
+
         </div>
         </>
     )

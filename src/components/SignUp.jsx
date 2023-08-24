@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 import App from "../App";
 import { ToastContainer } from "react-toastify";
 
-//"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGUxMGJiY2JlYjkzNTAwMTRjMmQxZWQiLCJ1c2VybmFtZSI6InN1cGVybWFuMjgiLCJpYXQiOjE2OTI0NzAyMDR9.LPdf-7kR0TXux8eTp3BAAf6p3Ro55ieUf-DHlLEz2Q0"
-
 export default function SignUp({setToken}){
     const[username,setUsername]=useState("");
     const[password,setPassword]=useState("");
@@ -31,8 +29,6 @@ export default function SignUp({setToken}){
                     user: { 
                         fname,
                         lname,
-                        //username:'superman30',
-                        //password:'krypt0n0nbust',  
                         username,
                         password,
                     }
@@ -54,7 +50,7 @@ export default function SignUp({setToken}){
     }
 
 return(
-    <div>
+    <div className="signup">
         <h1>Create Your Profile</h1>
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}

@@ -8,8 +8,6 @@ const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 const Posts = () => {
     const tokenString = localStorage.getItem('authToken'); 
   
-
-
     const [post, setPost] = useState([]);
     const [error, setError] = useState(null);
     const [searchParams, setSearchParams] = useState("");
@@ -31,21 +29,16 @@ const Posts = () => {
         getAllData();
     }, []);
 
-    const makePost = async () => {
+    const makePost = async (postId) => {
         try {
-            const response = await fetch(`${BaseURL}/posts`, {
+            const response = await fetch(`${BaseURL}/posts/${postId}`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${tokenString}`
                 },
                 body: JSON.stringify({
-                    post: {
-                        title: title,
-                        description: description,
-                        price: price,
-                        willDeliver: willDeliver
-                    }
+                    isActive: false
                 })
             });
             const result = await response.json();
@@ -113,22 +106,22 @@ const Posts = () => {
                             <input type="checkbox" checked={willDeliver} onChange={(e) => setWillDeliver(e.target.checked)} />
                         </label>
                         <br />
-                        <button style={{ border: "2px solid #242424", padding: "5px" }}>Submit New Post</button>
+                        <button>Submit New Post</button>
                     </form>
                 </div>
             )}
 
             <h1>Posts</h1>
 
-            <div>
+            <div className="search-bar">
                 <label>
                     Search: {' '}
-                    <input type="text" placeholder="Search" onChange={(e) => setSearchParams(e.target.value)} />
+                    <input type="text" onChange={(e) => setSearchParams(e.target.value)} />
                 </label>
             </div>
 
             {postToDisplay.map((p) => (
-                <div key={p._id}>
+                <div key={p._id} className="post-item">
                     <h3>{p.title}</h3>
                     <p>{p.description}</p>
                     <p>Price: {p.price}</p>
