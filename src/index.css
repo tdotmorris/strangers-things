@@ -3,15 +3,11 @@
 :root {
   display: flex;
   flex-direction: column;
- 
-
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
   color: #242424;
   background-color:white;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -29,6 +25,7 @@ a {
   border-style: solid;
   border-width: 10px;
 }
+
 a:hover {
   color: #104932;
 }
@@ -45,32 +42,43 @@ a:hover {
   min-width: 320px;
   min-height: 100vh;
   background-color: #e0d9ce;
+  padding: 30px;
 
 }
-.new-post{
-  background-color: white;
+
+#home {
+  text-align: center;
+  padding: 50px;
 }
+
 h1 {
   font-size: 3.2em; 
   line-height: 1.1;
   color: rgb(65, 65, 64);
   font-family: 'Inria Serif', serif;
+  text-align: center;
 }
+
 .banner{
   display: flex;
   flex-direction: row;
   background-color: #104932;
   padding: 60px;
 }
+
 .register{
   background-color: white;
   margin-top: 20px;
+  font-size: 20px;
 }
+
 #navbar{
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: space-around;
+  font-family: 'Inria Serif', serif;
+  font-size: 20px;
 }
 
 #logo{
@@ -83,27 +91,31 @@ h1 {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: white;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 0.3s, color 0.3s;
 }
 button:hover {
-  border-color: black;
+  background-color: #242424;
+  color: #fff;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
 img{
   height: 455px;
   width: 480px;
   padding: 10px;
+  object-fit: cover;
 }
+
 form {
   display: flex;
   flex-direction: column;
@@ -113,7 +125,70 @@ form {
   font-size: 20px;
 }
 
+.post-item {
+  border: 2px solid #242424; 
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px;
+  width: 70rem;
+}
+
 .new-post {
   font-family: 'Inria Serif', serif;
   font-size: 20px;
+  background-color: #e0d9ce;
+  text-align: center;
+  border: 2px solid #242424;
+  border-radius: 10px;
+  max-width: 100%;
+  padding: 20px;
+  width: 600px;
+  margin: 0 auto;
+  height: 450px;
+  box-sizing: border-box;
+}
+
+.new-post input {
+  border-radius: 5px;
+  width: 200px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+.new-post textarea {
+  border: 2px solid #242424;
+  border-radius: 5px;
+  width: 200px; 
+  height: 20px; 
+  margin-left: 5px; 
+}
+
+.search-bar {
+  font-family: 'Inria Serif', serif;
+  font-size: 20px;
+}
+
+.search-bar input {
+  border-radius: 5px;
+  width: 200px;
+  height: 20px;
+}
+
+.login {
+  font-family: 'Inria Serif', serif;
+}
+
+.login input{
+  border-radius: 5px;
+  width: 200px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+.signup input {
+  border-radius: 5px;
+  width: 200px;
+  height: 20px;
+  margin-left: 5px;
+  margin: 10px;
 }
