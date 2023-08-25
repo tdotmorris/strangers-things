@@ -57,7 +57,7 @@ const UpdatePost=async ()=>{
 
     const handleEditForm=async(e)=>{
         e.preventDefault();
-        
+
         if (!tokenString) {
             setError("You must be logged in to make a post.");
             return;
@@ -80,11 +80,11 @@ const UpdatePost=async ()=>{
     }
     }
 
-    
+
     return(
         <>
             <h1>Edit Post</h1>
-             
+
             {tokenString && (
                 <div className="edit-post">
                     <form onSubmit={handleEditForm}>
@@ -108,8 +108,8 @@ const UpdatePost=async ()=>{
                             <input type="checkbox" checked={willDeliver} onChange={(e) => setWillDeliver(e.target.checked)} />
                         </label>
                         <br />
-                   <button>Confirm Changes</button>
-               
+                   <button style={{ border: "2px solid #242424", padding: "5px" }}> Submit Update </button>
+
                     </form>
                 </div>
             )}
