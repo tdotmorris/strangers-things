@@ -55,13 +55,14 @@ function App() {
         ) : (
           <Link to={"/Login"} className='login'>Login</Link>
         )}
+
       </div>
       
       <div id='contents'>
         <Routes>
           <Route path="/" element={<Home username={username} />} />
           <Route path="/Profile" element={<Profile username={username}/>} />
-          <Route path="/Posts" element={<Posts  />} />
+          <Route path="/Posts" element={<Posts  username={username}/>} />
           <Route path="/Login" element={<Login setToken={setToken} />} />
           <Route path="/SignUp" element={<SignUp setToken={setToken} />} />
           <Route path="/EditPost" element={<EditPost token={token}/>}/>

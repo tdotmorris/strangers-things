@@ -67,7 +67,7 @@ export default function LogIn({ setToken }) {
 
             {successMessage && <p>{successMessage}</p>}
             {error && <p>{error}</p>}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} id="login">
                 <label>
                     Username: {' '}
                     <input type="text" value={username} onChange={(event) => setUsername(event.target.value)} />

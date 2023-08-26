@@ -107,10 +107,11 @@ console.log("is token being use:", tokenString)
 
     return(
         <>
-            <h1>Edit Post</h1>
+            
 
             {tokenString && (
                 <div className="edit-post">
+                    <h2>Edit Post</h2>
                     <form onSubmit={handleEditForm}>
                     <label>
                             Title:
