@@ -21,7 +21,7 @@ const Profile = ({username}) => {
     return (
         <>
             <div>
-                <h1>Welcome Back To Your Profile Kendra! </h1>
+                <h1>Welcome Back To Your Profile {username}! </h1>
                 <h2>Message Inbox</h2>
             </div>
 
