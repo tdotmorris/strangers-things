@@ -52,7 +52,7 @@ const Posts = ({token,username,onUpdatePost}) => {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${tokenString}`,
                 },
                 body: JSON.stringify({
                     post: {
@@ -255,7 +255,7 @@ const handleEdit = (postId) => {
                 method: "DELETE",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`, // use token instead of tokenString
+                  Authorization: `Bearer ${tokenString}`, // use token instead of tokenString
                 },
               });
         
@@ -268,6 +268,7 @@ const handleEdit = (postId) => {
               if (result.success) {
                 // Remove the post from the local state
                 setPost((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+                alert(`Deleted post: ${postId}`);
               } else {
                 setError(result.error.message || "Unexpected error occurred.");
               }
@@ -287,54 +288,9 @@ const handleEdit = (postId) => {
              </label>
         </div>
 
-           
-        {isEditing ?
-          (<EditPost
-          editForm={editForm}
-          setPost={setPost}
-          postId={isEditing}
-          
-          title={title} setTitle={setTitle}
-          description={description} setDescription={setDescription}
-          price={price} setPrice={setPrice}
-          willDeliver={willDeliver} setWillDeliver={setWillDeliver}
-
-          handleChange={handleChange}
-          handlePostUpdate={handlePostUpdate}
-         
-    />) :null}
-             
-           
-           
-             {postToDisplay.map((p) => (
-        <div key={p._id}>
-          <h3>{p.title}</h3>
-          <p>{p.description}</p>
-          <p>Price: {p.price}</p>
-          <p>Will Deliver: {p.willDeliver ? "Yes" : "No"}</p>
-
-          {tokenString && p.author.username !== username && (
-            <button onClick={() => handleSendMessage(p._id)}>
-              Send Message
-            </button>
-          )}
-
-          {tokenString && p.isAuthor && (
-            <>
-              <button onClick={() => handleDelete(p._id, p.author.username)}>
-                Delete
-              </button>
-              <button onClick={() => handleEdit(p._id)}>Edit</button>{" "}
-              <button onClick={() => handleViewMessages(p._id)}>
-                View Messages
-              </button>
-            </>
-          )}
-        </div>
-      ))}
-    {tokenString && (
+        {tokenString && (
         <div className="new-post">
-          <h2>Create New Post</h2>
+          <h2 className="createNewPost">Create New Post</h2>
           {successMessage && <p>{successMessage}</p>}
           {error && <p>{error}</p>}
           <form onSubmit={handleSubmit}>
@@ -378,7 +334,53 @@ const handleEdit = (postId) => {
             </button>
           </form>
         </div>
-    )};
+    )}
+           
+        {isEditing ?
+          (<EditPost
+          editForm={editForm}
+          setPost={setPost}
+          postId={isEditing}
+          
+          title={title} setTitle={setTitle}
+          description={description} setDescription={setDescription}
+          price={price} setPrice={setPrice}
+          willDeliver={willDeliver} setWillDeliver={setWillDeliver}
+
+          handleChange={handleChange}
+          handlePostUpdate={handlePostUpdate}
+         
+    />) :null}
+             
+           
+           
+             {postToDisplay.map((p) => (
+        <div key={p._id} className="displayedPost">
+          <h3>{p.title}</h3>
+          <p>{p.description}</p>
+          <p>Price: {p.price}</p>
+          <p>Will Deliver: {p.willDeliver ? "Yes" : "No"}</p>
+
+          {tokenString && p.author.username !== username && (
+            <button onClick={() => handleSendMessage(p._id)}>
+              Send Message
+            </button>
+          )}
+
+          {tokenString && p.isAuthor && (
+            <div>
+              <button   onClick={() => handleDelete(p._id, p.author.username)}>
+                Delete
+              </button>
+              <button id="postbutton2" onClick={() => handleEdit(p._id)}>Edit</button>{" "}
+              <button id="postbutton3" onClick={() => handleViewMessages(p._id)}>
+                View Messages
+              </button>
+            </div>
+          )}
+        </div>
+      ))}
+   
         
     </>
   );
