@@ -1,10 +1,11 @@
 
-const Home = () => {    
+const Home = ({username}) => {    
+    console.log(username)
     return (
         <>
 
             <div id="home">
-                <h1>Welcome</h1>
+                <h1>Welcome {username}! </h1>
                 <img src="https://assets.wfcdn.com/im/51826834/resize-h445%5Ecompr-r85/2399/239984953/Metal+Indoor+Pot+Planter.jpg" alt="brownchair"></img>
                 <img src="https://assets.wfcdn.com/im/52508857/resize-h800-w800%5Ecompr-r85/2019/201938669/Mid-Century+Geometric+Forest+Plant+Leaf+Framed+On+Canvas+2+Pieces+Print.jpg" alt="green canvas"></img>
                 <img src="https://assets.wfcdn.com/im/02581993/resize-h800-w800%5Ecompr-r85/2371/237128023/Vidalia+61.5%27%27+Traditional+Floor+Lamp.jpg" alt="decor lamp"></img>

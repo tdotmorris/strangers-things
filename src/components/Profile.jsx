@@ -1,13 +1,14 @@
 import { FetchAllData } from "../API";
 import React, { useState, useEffect } from 'react';
 
-const Profile = () => {
+const Profile = ({username}) => {
     const [posts, setPosts] = useState([]);
     const [error, setError] = useState(null);
     
     useEffect(() => {
         async function getAllData() {
             const APIResponse = await FetchAllData();
+            console.log(APIResponse)
             if (APIResponse && APIResponse.success) {
                 setPosts(APIResponse.data.posts);
             } else {
@@ -16,20 +17,24 @@ const Profile = () => {
         }
         getAllData();
     }, []);
-    
+    console.log(posts)
     return (
         <>
             <div>
-                <h1>Profile</h1>
-                <h3>Message Inbox</h3>
+                <h1>{username}'s Profile </h1>
+                <h2>Message Inbox</h2>
             </div>
 
             {posts && posts.map((post) => (
                 <div key={post._id}>
-                    <h4>Messages from: {post.username}</h4>
-                    {post.messages && post.messages.map((message, index) => (
-                        <p key={index}>{message}</p>
-                    ))}
+                     {post.messages && post.messages.map((message, index) => ( 
+                        <div key={index}>
+                        <h2>Messages from: {message.fromUser.username}</h2>
+                        <p>Message: {message.content}</p> 
+                         <h3>Sent on:{message.createdAt}</h3>
+                         
+                         </div>
+                     ))}
                 </div>
             ))}
 

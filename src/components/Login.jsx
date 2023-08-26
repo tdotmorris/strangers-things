@@ -43,7 +43,7 @@ export default function LogIn({ setToken }) {
                 setToken(result.data.token); 
                 setCurrentUser(result.data.user); 
                 setSuccessMessage(result.message|| "Successfully logged in!");
-                setUsername('');
+                //setUsername(result.data.username);
                 setPassword('');
 
                 setSuccessMessage("Successfully logged in!");
@@ -60,6 +60,7 @@ export default function LogIn({ setToken }) {
     }
 
     return (
+        
         <div>
             <h1>Log In</h1>
             {currentUser && <p>Welcome back, {currentUser.username}!</p>}
