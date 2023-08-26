@@ -51,6 +51,8 @@ function App() {
           <button onClick={() => {
             setToken(null);
             localStorage.removeItem('authToken');
+            // added page refresh
+            window.location.reload();
           }}>Logout</button>
         ) : (
           <Link to={"/Login"} className='login'>Login</Link>
