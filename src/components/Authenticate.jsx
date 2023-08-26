@@ -1,7 +1,7 @@
 const cohort = '2305-FTB-ET-WEB-PT';
 const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 
-export default async function Authenticate(token) {
+export default async function Authenticate(token,setUsername) {
     try {
         const APIResponse = await fetch(`${BaseURL}/users/me`, {
             method: "GET",
@@ -31,7 +31,8 @@ export default async function Authenticate(token) {
             messages: result.data.messages || [],
             _id: result.data._id || null
         };
-
+        
+        setUsername(userData.username)
         console.log('Extracted User Data:', userData);
         return userData;
 

@@ -6,37 +6,60 @@ import { FetchAllData } from "../API";
 const cohort = '2305-FTB-ET-WEB-PT';
 const BaseURL = `https://strangers-things.herokuapp.com/api/${cohort}`;
 
-export default function EditPost({token,editForm,title,description,price,willDeliver,handlePostUpdate,setTitle,setDescription,setPrice,setWillDeliver,handleChange,setPost}){
+export default function EditPost({postId,token,editForm,title,description,price,willDeliver,handlePostUpdate,setTitle,setDescription,setPrice,setWillDeliver,handleChange,setPost}){
     const tokenString = localStorage.getItem('authToken'); 
-    const {postId}=useParams();
-    //editForm={title,description,price,willDeliver}
+    //const {postId}=useParams();
+    editForm={title,description,price,willDeliver}
     const[successMessage,setSuccessMessage]=useState("")
     const [error, setError] = useState(null);
 
     /*function handleEditForm(e) {
         e.preventDefault();
-        fetch(`${BaseURL}/posts/${POST_ID}`, {
+        fetch(`${BaseURL}/posts/${postId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type" : "application/json",
-                "Authorization": `Bearer ${tokenString}`,
+                "Authorization": `Bearer ${token}`,
             },
             body: JSON.stringify(editForm),
         })
             .then(resp => resp.json())
             .then(updatedPost => {
                 handlePostUpdate(updatedPost)})
-    }*/
-const UpdatePost=async ()=>{
+    }
+
+
+    const updatePost = async (postId, postData) => {
+        try {
+          const response = await fetch(`${BaseURL}/posts/${postId}`, {
+            method: "PATCH", // or "PUT" depending on your API
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(postData),
+          });
+          const result = await response.json();
+          return result;
+        } catch (error) {
+          console.error(error);
+          return { success: false, error: error.message };
+        }
+      };*/
+
+      console.log(postId)
+
+const UpdatePost=async (postData)=>{
+console.log("is token being use:", tokenString)
 
     try{
         const response= await fetch(`${BaseURL}/posts/${postId}`,{
             method:"PATCH",
             headers:{
                 "Content-Type":"application/json",
-                "Authorization": `Bearer ${token}`,
+                "Authorization": `Bearer ${tokenString}`,
             },
-            body:JSON.stringify((editForm),{
+            body:JSON.stringify((editForm,postData),{
                 post: {
                     title: {title},
                     description: {description},
@@ -78,7 +101,8 @@ const UpdatePost=async ()=>{
     }else{setError(result.error.message);
 
     }
-    }
+    
+}
 
 
     return(

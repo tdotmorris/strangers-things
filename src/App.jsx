@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     if (token) {
-      Authenticate(token)
+      Authenticate(token,setUsername)
       .then(data => {
         if (data && data.username) { // Adjust based on your API's response
           setIsLoggedIn(true);

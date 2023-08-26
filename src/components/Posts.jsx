@@ -24,7 +24,8 @@ const Posts = ({token,username,onUpdatePost}) => {
     const [price, setPrice] = useState("");
     const [willDeliver, setWillDeliver] = useState(false);
     //const navigate=useNavigate()
-//state for conditional render of edit form
+
+    //state for conditional render of edit form
     const[isEditing,setIsEditing]=useState(false);
     const[editForm,setEditForm]=useState({
         title: '',
@@ -69,11 +70,14 @@ const Posts = ({token,username,onUpdatePost}) => {
             return { success: false, error: error.message };
         }
     };
- /*   
+   
 //when PATCH request happens;auto-hides the form, pushes changes to display
     function handlePostUpdate(updatedPost){
         setIsEditing(false);
-        onUpdatePost(updatedPost);
+        const onUpdatePost=()=>{
+            return updatedPost
+        };
+        onUpdatePost();
     }
 //capture user input in edit form inputs
     function handleChange(e){
@@ -97,7 +101,7 @@ const Posts = ({token,username,onUpdatePost}) => {
         setEditForm(filtered[0])
     }
 
-*/
+
 
 const handleEdit = (postId) => {
     // Find the post by its ID
@@ -161,10 +165,9 @@ const handleEdit = (postId) => {
          } else {
         setError(result.error.message);
      }
-    };
-
-        const result = await makePost();
-        if (result && result.success) {
+   
+        let newpost = await makePost();
+        if (newpost && newpost.success) {
             setSuccessMessage("Post created successfully!");
             setTitle("");
             setDescription("");
@@ -180,7 +183,7 @@ const handleEdit = (postId) => {
         }    
     };
 
-    const updatePost = async (postId, postData) => {
+    /*const updatePost = async (postId, postData) => {
         try {
           const response = await fetch(`${BaseURL}/posts/${postId}`, {
             method: "PATCH", // or "PUT" depending on your API
@@ -196,13 +199,13 @@ const handleEdit = (postId) => {
           console.error(error);
           return { success: false, error: error.message };
         }
-      };
+      };*/
 
     //Search Bar
     const postToDisplay = searchParams 
         ? post.filter(p => p.title.toLowerCase().includes(searchParams.toLowerCase()))
         : post;
-    
+    console.log(postToDisplay)
         const handleSendMessage = async (postId) => {
             const messageContent = prompt("Enter your message:");
         
@@ -284,11 +287,12 @@ const handleEdit = (postId) => {
              </label>
         </div>
 
-        {/*   
+           
         {isEditing ?
           (<EditPost
           editForm={editForm}
           setPost={setPost}
+          postId={isEditing}
           
           title={title} setTitle={setTitle}
           description={description} setDescription={setDescription}
@@ -299,54 +303,9 @@ const handleEdit = (postId) => {
           handlePostUpdate={handlePostUpdate}
          
     />) :null}
-        
-             
-             {post.map(post => 
-             
-             (<Post
-             key={post._id}
-             post={post}
-             title={title} setTitle={setTitle}
-             description={description} setDescription={setDescription}
-             price={price} setPrice={setPrice}
-             willDeliver={willDeliver} setWillDeliver={setWillDeliver}
-             captureEdit={captureEdit}
-             changeEditState={changeEditState}
-             />)
-                
-            )}  */}
              
            
-           <h1>Create New Post</h1>
-            {tokenString && (
-                <div className="new-post">
-                    {successMessage && <p>{successMessage}</p>}
-                    {error && <p>{error}</p>}
-                    <form onSubmit={handleSubmit}>
-                        <label>
-                            Title:
-                            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-                        </label>
-                        <br />
-                        <label>
-                            Description:
-                            <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-                        </label>
-                        <br />
-                        <label>
-                            Price:
-                            <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} />
-                        </label>
-                        <br />
-                        <label>
-                            Will Deliver:
-                            <input type="checkbox" checked={willDeliver} onChange={(e) => setWillDeliver(e.target.checked)} />
-                        </label>
-                        <br />
-                        <button style={{ border: "2px solid #242424", padding: "5px" }}>Submit New Post</button>
-                    </form>
-                </div>
-            )}
+           
              {postToDisplay.map((p) => (
         <div key={p._id}>
           <h3>{p.title}</h3>
@@ -360,7 +319,7 @@ const handleEdit = (postId) => {
             </button>
           )}
 
-          {tokenString && p.author.username === username && (
+          {tokenString && p.isAuthor && (
             <>
               <button onClick={() => handleDelete(p._id, p.author.username)}>
                 Delete
@@ -373,9 +332,57 @@ const handleEdit = (postId) => {
           )}
         </div>
       ))}
+    {tokenString && (
+        <div className="new-post">
+          <h2>Create New Post</h2>
+          {successMessage && <p>{successMessage}</p>}
+          {error && <p>{error}</p>}
+          <form onSubmit={handleSubmit}>
+            <label>
+              Title:
+              <input
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </label>
+            <br />
+            <label>
+              Description:
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </label>
+            <br />
+            <label>
+              Price:
+              <input
+                type="text"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </label>
+            <br />
+            <label>
+              Will Deliver:
+              <input
+                type="checkbox"
+                checked={willDeliver}
+                onChange={(e) => setWillDeliver(e.target.checked)}
+              />
+            </label>
+            <br />
+            <button style={{ border: "2px solid #242424", padding: "5px" }}>
+            {isEditing ? "Update Post" : "Submit New Post"}
+            </button>
+          </form>
+        </div>
+    )};
+        
     </>
-  ); 
-
+  );
+    };
 
 
 export default Posts;
