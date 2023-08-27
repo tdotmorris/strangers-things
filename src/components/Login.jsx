@@ -80,7 +80,7 @@ export default function LogIn({ setToken }) {
                 <br />
                 <button>Log In</button>
             </form>
-            <Link to={"/SignUp"} className='register'>Sign Up Now</Link>
+            <Link to={"/SignUp"} className='register'> Don't have an Account? Sign up here</Link>
         </div>
     );
 }

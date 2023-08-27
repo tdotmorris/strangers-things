@@ -72,13 +72,13 @@ const Posts = ({token,username,onUpdatePost}) => {
     };
    
 //when PATCH request happens;auto-hides the form, pushes changes to display
-    function handlePostUpdate(updatedPost){
+    /*function handlePostUpdate(updatedPost){
         setIsEditing(false);
         const onUpdatePost=()=>{
             return updatedPost
         };
         onUpdatePost();
-    }
+    }*/
 //capture user input in edit form inputs
     function handleChange(e){
         setEditForm({
@@ -139,6 +139,7 @@ const handleEdit = (postId) => {
           if (isEditing) {
             // Updating a post
             result = await updatePost(isEditing, postDetails);
+            return setSuccessMessage('Post updated successfully!')
           } else {
             // Creating a new post
             result = await makePost(postDetails);
@@ -183,24 +184,31 @@ const handleEdit = (postId) => {
         }    
     };
 
-    /*const updatePost = async (postId, postData) => {
+      const updatePost = async (postId,postData) => {
+        console.log("is token being use:", tokenString)
         try {
           const response = await fetch(`${BaseURL}/posts/${postId}`, {
             method: "PATCH", // or "PUT" depending on your API
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${tokenString}`,
             },
-            body: JSON.stringify(postData),
+            body: JSON.stringify((editForm,postData),{
+              post: {
+                  title: {title},
+                  description: {description},
+                  price: {price},
+                  willDeliver: {willDeliver}
+              }
+            })
           });
           const result = await response.json();
-          return result;
+          return result
+          
         } catch (error) {
-          console.error(error);
-          return { success: false, error: error.message };
+          setError(error.message);
         }
-      };*/
-
+      };
     //Search Bar
     const postToDisplay = searchParams 
         ? post.filter(p => p.title.toLowerCase().includes(searchParams.toLowerCase()))
@@ -290,7 +298,7 @@ const handleEdit = (postId) => {
 
         {tokenString && (
         <div className="new-post">
-          <h2 className="createNewPost">Create New Post</h2>
+          <h2 className="createNewPost"></h2>
           {successMessage && <p>{successMessage}</p>}
           {error && <p>{error}</p>}
           <form onSubmit={handleSubmit}>
@@ -348,7 +356,8 @@ const handleEdit = (postId) => {
           willDeliver={willDeliver} setWillDeliver={setWillDeliver}
 
           handleChange={handleChange}
-          handlePostUpdate={handlePostUpdate}
+          //handlePostUpdate={handlePostUpdate}
+          //updatedPost={updatedPost}
          
     />) :null}
              

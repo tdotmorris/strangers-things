@@ -13,43 +13,10 @@ export default function EditPost({postId,token,editForm,title,description,price,
     const[successMessage,setSuccessMessage]=useState("")
     const [error, setError] = useState(null);
 
-    /*function handleEditForm(e) {
-        e.preventDefault();
-        fetch(`${BaseURL}/posts/${postId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type" : "application/json",
-                "Authorization": `Bearer ${token}`,
-            },
-            body: JSON.stringify(editForm),
-        })
-            .then(resp => resp.json())
-            .then(updatedPost => {
-                handlePostUpdate(updatedPost)})
-    }
-
-
-    const updatePost = async (postId, postData) => {
-        try {
-          const response = await fetch(`${BaseURL}/posts/${postId}`, {
-            method: "PATCH", // or "PUT" depending on your API
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(postData),
-          });
-          const result = await response.json();
-          return result;
-        } catch (error) {
-          console.error(error);
-          return { success: false, error: error.message };
-        }
-      };*/
-
+   
       console.log(postId)
 
-const UpdatePost=async (postData)=>{
+/*const UpdatePost=async (postData)=>{
 console.log("is token being use:", tokenString)
 
     try{
@@ -69,16 +36,17 @@ console.log("is token being use:", tokenString)
             })
         });
         const result=await response.json()
-        console.log(result.data.post)
-        return result.data.post
-        .then(updatedPost=>{
+        
+        if(result.data.post && result.success)
+        (updatedPost=>{
             handlePostUpdate(updatedPost)})
     }catch(error){
         console.log(error);
     return {success: false, error:error.message}}
-};
+};*/
 
-    const handleEditForm=async(e)=>{
+
+    /*const handleEditForm=async(e)=>{
         e.preventDefault();
 
         if (!tokenString) {
@@ -86,7 +54,7 @@ console.log("is token being use:", tokenString)
             return;
         }
 
-        const result= await UpdatePost();
+        const result= await updatePost();
         if (result && result.success) {
             setSuccessMessage("Post updated successfully!");
             setTitle("");
@@ -100,7 +68,7 @@ console.log("is token being use:", tokenString)
         }
     }else{setError(result.error.message);
 
-    }
+    
     
 }
 
@@ -139,4 +107,5 @@ console.log("is token being use:", tokenString)
                 </div>
             )}
     </>
-)}
+)}*/
+}
